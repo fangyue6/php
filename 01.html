@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script >
+        var number=parseInt(Math.random()*8+1);
+
+        switch (number){
+            case 1:
+                self.location='../1cake/index.html';
+                break;
+            case 2:
+                self.location='../2fox-run/index.html';
+                break;
+            case 3:
+                self.location='../3magic-effect/index.html';
+                break;
+            case 4:
+                 self.location='../4page-transitions/index.html';
+                break;
+            case 5:
+                self.location='../5roller-coaster/index.html';
+                break;
+            case 6:
+                self.location='../6romantic/index.html';
+                break;
+            case 7:
+                self.location='../7swing-text/index.html';
+                break;
+            case 8:
+                self.location='../8text-pixel/index.html';
+                break;
+            default :
+                break;
+        }
+    </script>
+</head>
+<body>
+水平滚动：
+<marquee direction="left" align="bottom" height="25" width="100%" onmouseout="this.start()" onmouseover="this.stop()" scrollamount="2" scrolldelay="1">水平滚动字幕内容</marquee>
+垂直滚动：
+<marquee direction="up" height="200" onmouseout="this.start()" onmouseover="this.stop()" scrollAmount="1" scrollDelay="1">垂直滚动字内容</marquee>
+</body>
+</html>

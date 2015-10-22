@@ -1,0 +1,8 @@
+更改php.ini
+memcache方式保存session
+session.save_handler = memcache
+session.save_path = "tcp://127.0.0.1:1211;tcp://127.0.0.1:11220"
+
+用户自定义保存session
+session.save_handler = user
+session.save_path = "tcp://127.0.0.1:1211;tcp://127.0.0.1:11220"

@@ -1,0 +1,74 @@
+Liunx下安装MemCached软件
+安装memcache源代码
+   http://memcached.googlecode.com/files/memcached-1.4.10.tar.gz
+1.首先安装依赖包libevent
+	yum –y install libevent *
+2. 主包已经安装,别忘记安装libevent-devel*,不然./configure过不去
+	tar xzf /lamp/memcached-1.4.10.tar.gz	解压memcached
+	cd /lamp/memcached-1.4.10			进入 memcached目录
+	./configure --prefix=/usr/local/memcache 配置
+	make && make install			 编译与安装
+	useradd  memcache				 添加memcache用户
+3.因为系统不能用root运行memcache软件
+ 	/usr/local/memcache/bin/memcached –umemcache & #后台运行
+ 	netstat –tunpl|grep :11211			查看端口
+ 	telnet 192.168.10.1 11211				连接测试
+	stats		memcache命令：查看当前状态
+4.写入自启动：
+	vi /etc/rc.local
+	/usr/local/memcache/bin/memcached –umemcache &
+5.如何杀掉后台进程
+	pkill memcached
+
+------------------------------------------------------------------
+Windows下安装memcached软件
+-------
+1、将memcached.exe放到 C:\env\wamp\bin 目录下
+2、dos进入  C:\env\wamp\bin
+    memcached.exe -d install   安装服务
+    memcached.exe -d uninstall 卸载
+    sc create "Memcached Server" start= auto binPath= "C:\env\wamp\bin\memcached.exe -d runservice -m 32 -p 11211 -l 127.0.0.1" DisplayName= "Memcached Server"
+    sc create "Memcached Server1" start= auto binPath= "C:\env\wamp\bin\memcached.exe -d runservice -m 32 -p 11220 -l 127.0.0.1" DisplayName= "Memcached Server1"
+    sc start "Memcached Server1"  //启动
+    sc stop "Memcached Server1"  //停止
+    sc delete "Memcached Server1"  //卸载该服务
+3、查看
+    netstat -a
+4、登陆
+    telnet 127.0.0.1 11220
+-------
+
+1.1 在网上下载memcached-1.2.1-win32.zip。解压放某个盘下面，
+	  比如在c:\memcached
+1.2 在终端（cmd）下：
+		D:\AppServ>memcached.exe -d install 	安装
+		D:\AppServ>memcached.exe -d uninstall 	卸载
+		D:\AppServ>memcached.exe -d start 	启动
+		D:\AppServ>memcached.exe -d stop 	停止
+		memcached.exe -h  			获取所有帮助
+1.3 在启动之后连接：
+	  D:\AppServ> telnet 127.0.0.1 11211   --连接memcache端口11211
+	  使用quit退出。
+
+--------------------------------------
+memcached服务器的管理
+
+启动Memcache 常用参数
+-p <num>   设置端口号(默认不设置为: 11211)
+-U <num>   UDP监听端口(默认: 11211, 0 时关闭)
+-l <ip_addr> 绑定地址(默认:所有都允许,无论内外网或者本机更换IP，有安全隐患，若设置为127.0.0.1就只能本机访问)
+-d   独立进程运行
+... -d start 启动memcached服务
+... -d restart 重起memcached服务
+... -d stop|shutdown 关闭正在运行的memcached服务
+... -d install 安装memcached服务
+... -d uninstall 卸载memcached服务
+-u <username> 绑定使用指定用于运行进程<username>
+-m <num>  允许最大内存用量，单位M (默认: 64 MB)
+-P <file> 将PID写入文件<file>，可以使得后边进行快速进程终止, 需要与-d 一起使用
+-M 内存耗尽时返回错误，而不是删除项
+-c  最大同时连接数，默认是1024
+-f 块大小增长因子，默认是1.25
+-n 最小分配空间，key+value+flags默认是48
+-h 显示帮助
+

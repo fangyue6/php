@@ -1,0 +1,4 @@
+URL加session id也是自动的
+在使用Linux系统做服务器时， 在编辑PHP时， 如果使用了—enable-trans-sid配置选项， 和运行时选项session.use_trans_sid都被激活， 在客户端禁用cookie时， 相对的url将被自动修改为包含sessionid, 如果没有配置， 或使用windows系统作为服务器时， 可以使用常量SID.
+建议使用Linux并配置好。
+

@@ -1,0 +1,15 @@
+安装PHP中的MemCache应用程序扩展接口
+Liunx系统下：
+tar  zxvf  memcache-2.2.5.tgz	解压软件包
+cd  memcache-2.2.5		进入目录
+/usr/local/php/bin/phpize		生成配置环境
+./configure  --with-php-config=/usr/local/php/bin/php-config					配置
+make  &&  make  install		编译和安装
+
+修改php.ini
+extension_dir = "/usr/local/php//lib/php/extensions/no-debug-non-zts-20060613/“
+extension="memcache.so";
+
+Windows系统下：
+将php_memcache.dll  C:\env\wamp\bin\php\php5.3.10\ext目录下（版本对应）
+php.ini增加 extension=php_memcache.dll
