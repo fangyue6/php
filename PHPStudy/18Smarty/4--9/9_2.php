@@ -11,26 +11,26 @@
 		$smarty -> assign("arr", array("os", "Linux", "webserver", "Apache", "db","MySQL", "language","PHP"));
 
 
-		$pdo = new  PDO("mysql:host=localhost;dbname=xsphp", "root", "123456");
-	
-		$page = new Page(40, 5);
+        $pdo = new  PDO("mysql:host=localhost;dbname=xsphp", "root", "123456");
+
+        $page = new Page(40, 5);
 
 
-		$sql = "select id, name, age, sex, email from users {$page->limit}";
+        $sql = "select id, name, age, sex, email from users {$page->limit}";
 
-		echo $sql;
+        echo $sql;
 
-		$stmt = $pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
 
-		$stmt -> execute();
-	
-		$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt -> execute();
 
-		//print_r($users);
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		$smarty -> assign("users", $users);
+        //print_r($users);
 
-		$smarty -> assign("fpage", $page->fpage());
+        $smarty -> assign("users", $users);
+
+        $smarty -> assign("fpage", $page->fpage());
 
 	}
 
