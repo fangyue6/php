@@ -26,7 +26,7 @@ if(isset($_POST['dosubmit'])) {
 			//加登录标记
 			$_SESSION['isLogin']=1;
 
-			header("Location:4_3.php");
+			header("Location:index.php");
 		}else {
 			echo "登录失败!<br>";
 		}

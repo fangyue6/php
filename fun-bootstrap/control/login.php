@@ -1,6 +1,6 @@
 <?php
 
-//header('Content-Type:text/html; charset=utf-8');//Ê¹ÓÃgb2312±àÂë£¬Ê¹ÖÐÎÄ²»»á±ä³ÉÂÒÂë
+//header('Content-Type:text/html; charset=utf-8');//Ê¹ï¿½ï¿½gb2312ï¿½ï¿½ï¿½ë£¬Ê¹ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 $username=$_POST['username'];
 //$username = json_decode($_POST['username']);
 $password=md5($_POST['password']);
@@ -9,13 +9,13 @@ echo $username . "...".$password;
 return;*/
 
 try {
-    //´´½¨¶ÔÏó
+
     $pdo = new  PDO("mysql:host=203.195.179.183;port=12613;dbname=fun", "root", "Yue920611Fang");
-    //ÉèÖÃ´íÎóÊ¹ÓÃÒì³£µÄÄ£Ê½
+
     $pdo -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo -> query("set names utf8");
 }catch(PDOException $e) {
-    echo "Êý¾Ý¿âÁ¬½ÓÊ§°Ü£º".$e->getMessage();
+    echo "æ•°æ®åº“è¿žæŽ¥é”™è¯¯".$e->getMessage();
     exit;
 }
 
@@ -27,9 +27,9 @@ try {
     $stmt -> setFetchMode(PDO::FETCH_NUM);
     $find_result= $stmt->fetchAll();
 
-    $result_data=0;//ÓÃ»§Ãû²»´æÔÚ
+    $result_data=0;//ç”¨æˆ·åä¸å­˜åœ¨
     if(!empty($find_result)){
-        $result_data=1;//ÓÃ»§Ãû´æÔÚ
+        $result_data=1;//ç”¨æˆ·åå­˜åœ¨
     }
     if($result_data==1){
         $sql="select * from friend_info where (username=? or email=? or nickname=? ) and password=? ";
@@ -49,10 +49,9 @@ try {
              $_SESSION["email"]=$email;
             // $_SESSION["username"]=$name;
          }else{
-             $result_data=2;//ÃÜÂë´íÎó
+             $result_data=2;//å¯†ç é”™è¯¯
          }*/
         if($stmt->rowCount() > 0) {
-            //½«ÓÃ»§ÐÅÏ¢Ò»´ÎÐÔ·Åµ½sessionÖÐ
             session_start();
            $_SESSION=$stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -63,11 +62,11 @@ try {
             //echo $_SESSION['email'];
             //header("Location:../index.php");
         }else {
-            $result_data=2;//ÃÜÂë´íÎó
+            $result_data=2;//å¯†ç é”™è¯¯
         }
     }
 }catch(PDOException $e) {
-    echo "´íÎó£º".$e->getMessage();
+    echo "ï¿½ï¿½ï¿½ï¿½".$e->getMessage();
 }
 echo $result_data;
 ?>
