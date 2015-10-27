@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.17, created on 2015-10-23 11:26:26
+<?php /* Smarty version Smarty-3.1.17, created on 2015-10-27 13:24:27
          compiled from "C:\env\wamp\www\php\fun-bootstrap\views\index.html" */ ?>
 <?php /*%%SmartyHeaderCode:149275628de568f3e47-54221191%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '1c1ac7bc1f2f546e75d5714a3fc1955bc5070103' => 
     array (
       0 => 'C:\\env\\wamp\\www\\php\\fun-bootstrap\\views\\index.html',
-      1 => 1445599567,
+      1 => 1445952264,
       2 => 'file',
     ),
   ),
@@ -22,10 +22,14 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'flag' => 0,
     'username' => 0,
     'fun' => 0,
+    'message' => 0,
+    'me' => 0,
+    'col' => 0,
   ),
   'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_5628de5698c134_41807713')) {function content_5628de5698c134_41807713($_smarty_tpl) {?><!DOCTYPE html>
+<?php if ($_valid && !is_callable('content_5628de5698c134_41807713')) {function content_5628de5698c134_41807713($_smarty_tpl) {?><?php if (!is_callable('smarty_modifier_date_format')) include 'C:\\env\\wamp\\www\\php\\fun-bootstrap\\libs\\plugins\\modifier.date_format.php';
+?><!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -36,6 +40,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <link rel="stylesheet" type="text/css" href="css/common.css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script src="js/my.js"></script>
 <script type="text/javascript">
     function next(){
         var h1=$("#travel .span12 .row .span6 .block-left h1").text();
@@ -43,6 +48,41 @@ $_valid = $_smarty_tpl->decodeProperties(array (
         var p1=$("#travel .span12 .row .span6 .block-left p:eq(1)").text();
         alert(p0);
        // alert(p1);
+    }
+    /**
+     * 留言
+     */
+    function talk(){
+        $message=$("#message").val().trim();
+        if($message==''){
+            Alert("请输入留言内容！！！",2500);
+            return;
+        }
+        $(function(){
+
+            $.ajax({
+                url: "control/message.php",
+                type: "POST",
+                //contentType: "application/json; charset=utf-8",
+                data:{"message":$message},
+                //dataType: "json",
+                error: function(){
+                    alert('Error loading XML document');
+                },
+                success: function(data,status){//如果调用php成功
+                   // alert(data);
+                    if(data!=1){
+                        Alert("留言不成功!!!",2500);
+                    }else{
+                        Alert("留言成功",2500);
+                        self.location='index.php';
+                    }
+
+                   // alert(data);
+                    }
+            });
+
+        });
     }
 
     function register(){
@@ -183,7 +223,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                             <?php } else { ?>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">欢迎您:<?php echo $_smarty_tpl->tpl_vars['username']->value;?>
- <b class="caret"></b></a>
+<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="control/logout.php">退出</a></li>
                                 </ul>
@@ -290,20 +330,50 @@ $_valid = $_smarty_tpl->decodeProperties(array (
                     <div class="block-left">
                         <h1>留言给:<?php echo $_smarty_tpl->tpl_vars['fun']->value['title'];?>
 </h1>
-                       <textarea rows="5" cols="200">
-                        在w3school，你可以找到你所需要的所有的网站建设教程。ddddddddddddddddddddddddddddddddddd
+                       <textarea rows="5" cols="200" name="message" id="message" style="text-align: left" >
                         </textarea>
                         <br>
-                        <button class="btn" onclick="next()">发表</button>
-
+                        <button class="btn" onclick="talk()">发表</button>
                     </div>
                 </div>
-                <div class="span6">
+                <div style="text-align: right;float: right">
+                        <div id="show_message" style="width:400px; height:400px; overflow:auto; text-align: left">
+                            <?php  $_smarty_tpl->tpl_vars['me'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['me']->_loop = false;
+ $_from = $_smarty_tpl->tpl_vars['message']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+foreach ($_from as $_smarty_tpl->tpl_vars['me']->key => $_smarty_tpl->tpl_vars['me']->value) {
+$_smarty_tpl->tpl_vars['me']->_loop = true;
+?>
+                                <span>
+                                    在<span style="color: #7f0055">
+                                    <?php echo smarty_modifier_date_format($_smarty_tpl->tpl_vars['me']->value['datetime'],"%Y-%m-%d %H:%M:%S");?>
+</span>
+                                    <span style="color: #885500"><?php echo $_smarty_tpl->tpl_vars['me']->value['formNickName'];?>
+</span>
+                                    给<span style="color: #88ff44"><?php echo $_smarty_tpl->tpl_vars['me']->value['toNickName'];?>
+</span>留言：
+                                </span><br>
+                                <?php if ($_smarty_tpl->tpl_vars['me']->value['datetime']%3==0) {?>
+                                    <span style="color: red;"><?php echo $_smarty_tpl->tpl_vars['me']->value['content'];?>
+</span>
+                                     <?php } elseif ($_smarty_tpl->tpl_vars['me']->value['datetime']%2==0) {?>
+                                     <span style="color: green;"><?php echo $_smarty_tpl->tpl_vars['me']->value['content'];?>
+</span>
+                                        <?php } else { ?>
+                                        <span style="color: blue;"><?php echo $_smarty_tpl->tpl_vars['me']->value['content'];?>
+</span>
 
-                    <div style="text-align: right">
-                        <img src="<?php echo $_smarty_tpl->tpl_vars['fun']->value['pic'];?>
-" height="400" width="400" />
-                    </div>
+                                    <?php }?>
+                            <hr>
+                                 <!--<?php  $_smarty_tpl->tpl_vars['col'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['col']->_loop = false;
+ $_from = $_smarty_tpl->tpl_vars['me']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+foreach ($_from as $_smarty_tpl->tpl_vars['col']->key => $_smarty_tpl->tpl_vars['col']->value) {
+$_smarty_tpl->tpl_vars['col']->_loop = true;
+?>
+                                    <p><?php echo $_smarty_tpl->tpl_vars['col']->value;?>
+</p>
+                                 <?php } ?>-->
+                            <?php } ?>
+                        </div>
                 </div>
             </div>
             <?php }?>

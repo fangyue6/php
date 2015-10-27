@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="css/common.css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script src="js/my.js"></script>
 <script type="text/javascript">
     function next(){
         var h1=$("#travel .span12 .row .span6 .block-left h1").text();
@@ -16,6 +17,41 @@
         var p1=$("#travel .span12 .row .span6 .block-left p:eq(1)").text();
         alert(p0);
        // alert(p1);
+    }
+    /**
+     * 留言
+     */
+    function talk(){
+        $message=$("#message").val().trim();
+        if($message==''){
+            Alert("请输入留言内容！！！",2500);
+            return;
+        }
+        $(function(){
+
+            $.ajax({
+                url: "control/message.php",
+                type: "POST",
+                //contentType: "application/json; charset=utf-8",
+                data:{"message":$message},
+                //dataType: "json",
+                error: function(){
+                    alert('Error loading XML document');
+                },
+                success: function(data,status){//如果调用php成功
+                   // alert(data);
+                    if(data!=1){
+                        Alert("留言不成功!!!",2500);
+                    }else{
+                        Alert("留言成功",2500);
+                        self.location='index.php';
+                    }
+
+                   // alert(data);
+                    }
+            });
+
+        });
     }
 
     function register(){
@@ -155,7 +191,7 @@
                             <li><a data-toggle="modal" href="#register">注册</a></li>
                             <{else}>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">欢迎您:<{$username}> <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">欢迎您:<{$username}><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="control/logout.php">退出</a></li>
                                 </ul>
@@ -258,18 +294,35 @@
                 <div class="span6">
                     <div class="block-left">
                         <h1>留言给:<{$fun['title']}></h1>
-                       <textarea rows="5" cols="200">
-                        在w3school，你可以找到你所需要的所有的网站建设教程。ddddddddddddddddddddddddddddddddddd
+                       <textarea rows="5" cols="200" name="message" id="message" style="text-align: left" >
                         </textarea>
                         <br>
-                        <button class="btn" onclick="next()">发表</button>
+                        <button class="btn" onclick="talk()">发表</button>
                     </div>
                 </div>
-                <div class="span6">
+                <div style="text-align: right;float: right">
+                        <div id="show_message" style="width:400px; height:400px; overflow:auto; text-align: left">
+                            <{foreach $message as $me}>
+                                <span>
+                                    在<span style="color: #7f0055">
+                                    <{$me['datetime']|date_format:"%Y-%m-%d %H:%M:%S"}></span>
+                                    <span style="color: #885500"><{$me['formNickName']}></span>
+                                    给<span style="color: #88ff44"><{$me['toNickName']}></span>留言：
+                                </span><br>
+                                <{if $me['datetime']%3==0}>
+                                    <span style="color: red;"><{$me['content']}></span>
+                                     <{elseif $me['datetime']%2==0}>
+                                     <span style="color: green;"><{$me['content']}></span>
+                                        <{else}>
+                                        <span style="color: blue;"><{$me['content']}></span>
 
-                    <div style="text-align: right">
-                        <img src="<{$fun['pic']}>" height="400" width="400" />
-                    </div>
+                                    <{/if}>
+                            <hr>
+                                 <!--<{foreach $me as $col}>
+                                    <p><{$col}></p>
+                                 <{/foreach}>-->
+                            <{/foreach}>
+                        </div>
                 </div>
             </div>
             <{/if}>

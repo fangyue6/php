@@ -14,6 +14,11 @@ class Fun{
             exit;
         }
     }
+
+    /**
+     * @return mixed
+     * 得到最新信息
+     */
     function getFun(){
         try {
             $sql="select * from fun order by id desc limit 1 ";
